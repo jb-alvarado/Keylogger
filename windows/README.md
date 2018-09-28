@@ -13,3 +13,11 @@ Both of these save the keystrokes to a .txt file when closed.
 Please feel free to contribute to fix any problems!
 
 Please note, this repo is for educational purposes only. No contributors are to fault for any actions done by this program.
+
+---
+
+To compile with g++ (msys2) run:
+
+```
+g++ -Wno-write-strings -o keylogger.exe klog_main.cpp
+```

