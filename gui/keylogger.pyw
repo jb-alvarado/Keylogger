@@ -17,7 +17,6 @@ def tick():
     global sec, min, hour
     if not doTick:
         return
-    sec += 1
     if sec == 60:
         min += 1
         sec = 0
@@ -29,6 +28,7 @@ def tick():
     min = round(min, 1)
     hour = round(hour, 1)
     timeLabel.configure(text="%02d:%02d:%02d" % (hour, min, sec))
+    sec += 1
     root.after(1000, tick)
 
 
