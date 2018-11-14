@@ -39,6 +39,7 @@ def start():
     tick()
     logging.setDaemon(True)
     logging.start()
+    pathLabel.configure(text="")
     startButton.configure(text="Stop", bg="red", command=stop)
 
 
@@ -56,7 +57,7 @@ def reset():
     min = 0
     hour = 0
     doTick = True
-    pathLabel.configure(text=None)
+    pathLabel.configure(text="")
 
 
 timeLabel = tkinter.Label(root, fg='black',
@@ -69,7 +70,7 @@ startButton = tkinter.Button(
 startButton.pack(padx=100, pady=30)
 
 pathLabel = tkinter.Label(root, anchor='center',
-                          text=None, font=("Consolas", 10))
+                          text="", font=("Consolas", 10))
 pathLabel.pack()
 
 root.mainloop()
