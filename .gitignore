@@ -2,3 +2,6 @@
 *.log
 .DS_Store
 keylogger
+keylogger.exe
+.ropeproject/*
+*__pycache__*

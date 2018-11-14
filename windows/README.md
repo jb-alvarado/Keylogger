@@ -19,5 +19,5 @@ Please note, this repo is for educational purposes only. No contributors are to 
 To compile with g++ (msys2) run:
 
 ```
-g++ -Wno-write-strings -o keylogger.exe klog_main.cpp
+g++ -Wno-write-strings -static -o keylogger.exe klog_main.cpp
 ```

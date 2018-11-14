@@ -4,7 +4,7 @@ import os
 
 from datetime import datetime
 from pathlib import Path
-from subprocess import Popen, STDOUT, PIPE
+from subprocess import Popen
 from threading import Thread
 
 
@@ -17,11 +17,7 @@ class Keylog(Thread):
 
     def run(self):
         cmd = ['keylogger', self._output]
-        self.proc = Popen(
-            cmd, stdout=PIPE, stderr=STDOUT, universal_newlines=True)
-
-        for line in self.proc.stdout:
-            print(line)
+        self.proc = Popen(cmd)
 
     def stop(self):
         if self.proc is not None:
