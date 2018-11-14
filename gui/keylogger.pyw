@@ -7,8 +7,8 @@ output = set_output()
 logging = Keylog(output)
 
 
-sec = 55
-min = 59
+sec = 0
+min = 0
 hour = 0
 doTick = True
 
@@ -52,8 +52,8 @@ def stop():
 
 def reset():
     global sec, min, hour, doTick
-    sec = 55
-    min = 59
+    sec = 0
+    min = 0
     hour = 0
     doTick = True
     pathLabel.configure(text=None)
